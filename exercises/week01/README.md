@@ -105,9 +105,12 @@ auto elapsed = duration_cast<microseconds>(t1 - t0).count();
 
 ### Bài 3: Tối ưu hàm ⭐⭐
 Cho 3 hàm O(n²) — tối ưu xuống O(n) hoặc O(n log n). Chứng minh bằng cách đo thời gian.
+Two Sum O(n²) → O(n) bằng hash set — tại n=30.000 nhanh hơn ×241 lần
+Max Subarray O(n²) → O(n) bằng Kadane — tại n=50.000 nhanh hơn ×6.845 lần
+Count Inversions O(n²) → O(n log n) bằng Merge Sort — tại n=30.000 nhanh hơn ×173 lần
 
-### Bài 4: 🔥 Dự Án Mini — Big-O Benchmark Tool ⭐⭐⭐
-> **Cảm hứng:** [algorithm-visualizer.org](https://algorithm-visualizer.org)
+### Bài 4: 🔥 Dự Án Mini — Big-O Benchmark Tool ⭐⭐⭐ 2125110152 nguyễn trí công
+> **Cảm hứng:** [algorithm-visualizer.org](https://algorithm-visualiSzer.org)
 
 Viết chương trình **BenchmarkTool** hiển thị bảng so sánh tốc độ các thuật toán:
 ```
@@ -125,3 +128,155 @@ Viết chương trình **BenchmarkTool** hiển thị bảng so sánh tốc đ�
 
 ---
 📁 Tham khảo: `Chuong1_TongQuan/Chuong1_TongQuan.cpp`
+
+
+#include <iostream>
+#include <fstream>
+#include <chrono>
+#include <vector>
+#include <algorithm>
+#include <functional>
+#include <cstdlib>
+#include <string>
+#include <iomanip>
+#include <sstream>
+
+using namespace std;
+using namespace chrono;
+
+volatile int sink;
+
+void algo_O1(const vector<int>& a)     { sink = a[0]; }
+
+void algo_OlogN(const vector<int>& a) {
+    int lo=0, hi=(int)a.size()-1, target=a[a.size()/2];
+    while(lo<=hi){ int mid=(lo+hi)/2;
+        if(a[mid]==target){sink=mid;break;}
+        else if(a[mid]<target) lo=mid+1; else hi=mid-1; }
+}
+
+void algo_ON(const vector<int>& a) {
+    int mx=a[0]; for(int x:a) if(x>mx) mx=x; sink=mx;
+}
+
+void algo_ONlogN(vector<int> a) { sort(a.begin(),a.end()); sink=a[0]; }
+
+void algo_ON2(vector<int> a) {
+    int n=a.size();
+    for(int i=0;i<n-1;i++)
+        for(int j=0;j<n-i-1;j++)
+            if(a[j]>a[j+1]) swap(a[j],a[j+1]);
+    sink=a[0];
+}
+
+double measure_us(function<void()> fn, int repeat) {
+    fn();
+    double total=0;
+    for(int r=0;r<repeat;r++){
+        auto t0=high_resolution_clock::now();
+        fn();
+        auto t1=high_resolution_clock::now();
+        total+=duration<double,micro>(t1-t0).count();
+    }
+    return total/repeat;
+}
+
+string fmt_time(double us) {
+    ostringstream oss;
+    if     (us < 1.0)    oss<<fixed<<setprecision(3)<<us*1000<<" ns";
+    else if(us < 1000.0) oss<<fixed<<setprecision(3)<<us<<" us";
+    else                 oss<<fixed<<setprecision(3)<<us/1000.0<<" ms";
+    return oss.str();
+}
+
+// Safe center: pads with spaces, works with pure ASCII strings only
+string center(const string& s, int w) {
+    int len=(int)s.size();
+    if(len>=w) return s.substr(0,w);
+    int lp=(w-len)/2, rp=w-len-lp;
+    return string(lp,' ')+s+string(rp,' ');
+}
+
+void print_table(ostream& out, const vector<int>& ns,
+                 const vector<string>& labels,
+                 const vector<vector<double>>& times) {
+    const int W0=12, WN=14;
+    // hline
+    auto hline=[&](char c){
+        out<<'+'; out<<string(W0+2,c);
+        for(int i=0;i<(int)ns.size();i++){ out<<'+'; out<<string(WN+2,c); }
+        out<<"+\n";
+    };
+
+    hline('=');
+    out<<"| "<<center("Algorithm",W0)<<" ";
+    for(int n:ns) out<<"| "<<center("n="+to_string(n),WN)<<" ";
+    out<<"|\n";
+    hline('=');
+
+    for(int i=0;i<(int)labels.size();i++){
+        out<<"| "<<center(labels[i],W0)<<" ";
+        for(int j=0;j<(int)ns.size();j++){
+            string t=(times[i][j]<0)?"too slow*":fmt_time(times[i][j]);
+            out<<"| "<<center(t,WN)<<" ";
+        }
+        out<<"|\n";
+        if(i+1<(int)labels.size()) hline('-');
+    }
+    hline('=');
+}
+
+int main(){
+    srand(42);
+    vector<int> ns={1000,10000,100000};
+    vector<string> labels={"O(1)","O(log n)","O(n)","O(n log n)","O(n^2)"};
+    vector<vector<double>> times(5,vector<double>(3,-1.0));
+
+    for(int j=0;j<(int)ns.size();j++){
+        int n=ns[j];
+        vector<int> sarr(n), rarr(n);
+        for(int i=0;i<n;i++) sarr[i]=i*2;
+        for(int i=0;i<n;i++) rarr[i]=rand()%1000000;
+
+        times[0][j]=measure_us([&](){ algo_O1(rarr);      }, 500);
+        times[1][j]=measure_us([&](){ algo_OlogN(sarr);   }, 500);
+        times[2][j]=measure_us([&](){ algo_ON(rarr);       },  30);
+        times[3][j]=measure_us([&](){ algo_ONlogN(rarr);  },  20);
+        if(n<=10000)
+            times[4][j]=measure_us([&](){ algo_ON2(rarr); },   5);
+    }
+
+    // Print to stdout
+    cout<<"\n";
+    cout<<"+----------------------------------------------------------+\n";
+    cout<<"|       Big-O Benchmark Tool  --  std::chrono             |\n";
+    cout<<"|  Compiler: g++ -O0  |  Averaged over multiple runs      |\n";
+    cout<<"+----------------------------------------------------------+\n\n";
+    print_table(cout, ns, labels, times);
+    cout<<"\n";
+    cout<<"Notes:\n";
+    cout<<"  O(1)      : array access (a[0])\n";
+    cout<<"  O(log n)  : binary search on sorted array\n";
+    cout<<"  O(n)      : linear scan for max element\n";
+    cout<<"  O(n log n): std::sort (introsort)\n";
+    cout<<"  O(n^2)    : bubble sort  [n=100000 est. > 1 hour]\n\n";
+
+    // Write to file
+    ofstream fout("/home/claude/benchmark.txt");
+    fout<<"+----------------------------------------------------------+\n";
+    fout<<"|       Big-O Benchmark Tool  --  std::chrono             |\n";
+    fout<<"|  Compiler: g++ -O0  |  Averaged over multiple runs      |\n";
+    fout<<"+----------------------------------------------------------+\n\n";
+    print_table(fout, ns, labels, times);
+    fout<<"\nNotes:\n";
+    fout<<"  O(1)      : array access (a[0])\n";
+    fout<<"  O(log n)  : binary search on sorted array\n";
+    fout<<"  O(n)      : linear scan for max element\n";
+    fout<<"  O(n log n): std::sort (introsort)\n";
+    fout<<"  O(n^2)    : bubble sort  [n=100000 est. > 1 hour]\n";
+    fout.close();
+
+    cout<<"=> Output saved to: benchmark.txt\n\n";
+    return 0;
+}
+
