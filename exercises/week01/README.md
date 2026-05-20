@@ -94,6 +94,15 @@ int countBits(int n) {
 ### Bài 2: Đo thời gian thực tế ⭐⭐
 Dùng `chrono` đo thời gian chạy của O(n), O(n²), O(log n) với n = 1.000 → 100.000. In bảng kết quả.
 
+#include <chrono>
+using namespace std::chrono;
+
+auto t0 = high_resolution_clock::now();
+// ... code cần đo ...
+auto t1 = high_resolution_clock::now();
+
+auto elapsed = duration_cast<microseconds>(t1 - t0).count();
+
 ### Bài 3: Tối ưu hàm ⭐⭐
 Cho 3 hàm O(n²) — tối ưu xuống O(n) hoặc O(n log n). Chứng minh bằng cách đo thời gian.
 
