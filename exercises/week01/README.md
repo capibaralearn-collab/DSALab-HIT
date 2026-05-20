@@ -105,111 +105,13 @@ auto elapsed = duration_cast<microseconds>(t1 - t0).count();
 
 ### Bài 3: Tối ưu hàm ⭐⭐ 2125110152 nguyễn trí công
 Cho 3 hàm O(n²) — tối ưu xuống O(n) hoặc O(n log n). Chứng minh bằng cách đo thời gian.
-import time
-import random
+Cho 3 hàm O(n²) — tối ưu xuống O(n) hoặc O(n log n). Chứng minh bằng cách đo thời gian. Trước — O(n²) int subSum_slow(vector& a, int k) { int cnt = 0, n = a.size(); for (int i = 0; i < n; i++) { int s = 0; for (int j = i; j < n; j++) { s += a[j]; if (s == k) cnt++; } } return cnt; } Sau — O(n) dùng prefix sum + hash map int subSum_fast(vector& a, int k) { unordered_map<int,int> freq; freq[0] = 1; int cnt = 0, prefix = 0; for (int x : a) { prefix += x; cnt += freq[prefix - k]; freq[prefix]++; } return cnt; }
 
-# ==========================================
-# 1. TWO SUM
-# ==========================================
-def two_sum_n2(arr, target):
-    n = len(arr)
-    for i in range(n):
-        for j in range(i + 1, n):
-            if arr[i] + arr[j] == target:
-                return True
-    return False
-
-def two_sum_n(arr, target):
-    seen = set()
-    for num in arr:
-        if target - num in seen:
-            return True
-        seen.add(num)
-    return False
 
 # ==========================================
 # 2. CONTAINS DUPLICATE
 # ==========================================
-def contains_duplicate_n2(arr):
-    n = len(arr)
-    for i in range(n):
-        for j in range(i + 1, n):
-            if arr[i] == arr[j]:
-                return True
-    return False
-
-def contains_duplicate_n(arr):
-    # Chuyển list thành set, nếu kích thước giảm đi tức là có phần tử trùng
-    return len(arr) != len(set(arr))
-
-# ==========================================
-# 3. MAXIMUM SUBARRAY
-# ==========================================
-def max_subarray_n2(arr):
-    n = len(arr)
-    max_sum = float('-inf')
-    for i in range(n):
-        current_sum = 0
-        for j in range(i, n):
-            current_sum += arr[j]
-            if current_sum > max_sum:
-                max_sum = current_sum
-    return max_sum
-
-def max_subarray_n(arr): # Kadane's Algorithm
-    max_sum = float('-inf')
-    current_sum = 0
-    for num in arr:
-        current_sum = max(num, current_sum + num)
-        max_sum = max(max_sum, current_sum)
-    return max_sum
-
-# ==========================================
-# HÀM ĐO THỜI GIAN BENCHMARK
-# ==========================================
-def benchmark():
-    # Tạo dữ liệu test lớn: Mảng 10,000 phần tử
-    N = 10000
-    print(f"--- ĐANG TEST VỚI MẢNG {N} PHẦN TỬ ---")
-    
-    arr_random = [random.randint(-1000, 1000) for _ in range(N)]
-    target = 999999  # Cố tình đặt target không tồn tại để ép vòng lặp chạy đến cuối (Worst-case)
-    
-    # 1. Two Sum
-    print("\n1. TWO SUM")
-    start = time.time()
-    two_sum_n2(arr_random, target)
-    print(f"O(n^2) time: {time.time() - start:.5f} giây")
-    
-    start = time.time()
-    two_sum_n(arr_random, target)
-    print(f"O(n) time:   {time.time() - start:.5f} giây")
-
-    # 2. Contains Duplicate
-    # Tạo mảng unique để ép vòng lặp chạy hết (Worst-case)
-    arr_unique = list(range(N)) 
-    print("\n2. CONTAINS DUPLICATE")
-    start = time.time()
-    contains_duplicate_n2(arr_unique)
-    print(f"O(n^2) time: {time.time() - start:.5f} giây")
-    
-    start = time.time()
-    contains_duplicate_n(arr_unique)
-    print(f"O(n) time:   {time.time() - start:.5f} giây")
-
-    # 3. Max Subarray
-    print("\n3. MAXIMUM SUBARRAY")
-    start = time.time()
-    max_subarray_n2(arr_random)
-    print(f"O(n^2) time: {time.time() - start:.5f} giây")
-    
-    start = time.time()
-    max_subarray_n(arr_random)
-    print(f"O(n) time:   {time.time() - start:.5f} giây")
-
-if __name__ == "__main__":
-    benchmark()
-
+de
 ### Bài 4: 🔥 Dự Án Mini — Big-O Benchmark Tool ⭐⭐⭐ 2125110152 nguyễn trí công
 > **Cảm hứng:** [algorithm-visualizer.org](https://algorithm-visualiSzer.org)
 
