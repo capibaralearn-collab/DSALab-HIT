@@ -108,10 +108,7 @@ Cho 3 hàm O(n²) — tối ưu xuống O(n) hoặc O(n log n). Chứng minh b�
 Cho 3 hàm O(n²) — tối ưu xuống O(n) hoặc O(n log n). Chứng minh bằng cách đo thời gian. Trước — O(n²) int subSum_slow(vector& a, int k) { int cnt = 0, n = a.size(); for (int i = 0; i < n; i++) { int s = 0; for (int j = i; j < n; j++) { s += a[j]; if (s == k) cnt++; } } return cnt; } Sau — O(n) dùng prefix sum + hash map int subSum_fast(vector& a, int k) { unordered_map<int,int> freq; freq[0] = 1; int cnt = 0, prefix = 0; for (int x : a) { prefix += x; cnt += freq[prefix - k]; freq[prefix]++; } return cnt; }
 
 
-# ==========================================
-# 2. CONTAINS DUPLICATE
-# ==========================================
-de
+
 ### Bài 4: 🔥 Dự Án Mini — Big-O Benchmark Tool ⭐⭐⭐ 2125110152 nguyễn trí công
 > **Cảm hứng:** [algorithm-visualizer.org](https://algorithm-visualiSzer.org)
 
