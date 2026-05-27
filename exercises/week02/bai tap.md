@@ -1,4 +1,5 @@
-bài 1
+Bài 1: Mảng cơ bản ⭐
+Nhập mảng n phần tử. Tính min, max, trung bình, tổng. Không dùng STL.
 #include <iostream>
 using namespace std;
 
