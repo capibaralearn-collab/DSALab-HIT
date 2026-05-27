@@ -13,12 +13,11 @@ void nhapMang(int arr[], int n) {
 void inMang(int arr[], int n) {
     cout << "Mang: ";
     for (int i = 0; i < n; i++) {
-        cout << arr[i];
-        if (i < n - 1) cout << ", ";
+        cout << arr[i] << " ";
     }
     cout << endl;
 }
-
+/* chạy vòng lặp từ i = 0 đên khi nào vi phạm i < n thì dừng và in tra vị trí của từng vị trí của m*/
 int timMin(int arr[], int n) {
     int min = arr[0];
     for (int i = 1; i < n; i++) {
@@ -27,7 +26,7 @@ int timMin(int arr[], int n) {
     }
     return min;
 }
-
+/*máy tính đặt biến min tại mảng ở vị trí 0, sau đó chạy vòng lặp duyệt từng mảng nếu thấy số nào nhỏ hơn min thì cập nhật min mới còn lớn hơn min thì bỏ qua*/
 int timMax(int arr[], int n) {
     int max = arr[0];
     for (int i = 1; i < n; i++) {
@@ -36,6 +35,7 @@ int timMax(int arr[], int n) {
     }
     return max;
 }
+/*máy tính đặt biến max tại mảng ở vị trí 0, sau đó chạy vòng lặp duyệt từng mảng nếu thấy số nào lớn hơn max thì cập nhật max  mới còn nhỏ hơn max thì bỏ qua*/
 
 long long tinhTong(int arr[], int n) {
     long long tong = 0;
@@ -43,11 +43,11 @@ long long tinhTong(int arr[], int n) {
         tong += arr[i];
     return tong;
 }
-
+/* khởi tạo biến tong và đặt giá trị ban đầu bằng 0,sau đó bắt đầu chạy vòng lặp từ vị trí i = 0 đến khi vi phạm i < n thì dừng và trả về kết quả */
 double tinhTrungBinh(int arr[], int n) {
     return (double)tinhTong(arr, n) / n;
 }
-
+/*gọi hàm tính tổng đã làm từ bước trước và trả về kết quả là số nguyên, và phải ép kiểu để về lại số thực, sau đó thực hiện phép chia để trả về kết quả*/
 int main() {
     int n;
     cout << "Nhap so phan tu n: ";
@@ -63,9 +63,9 @@ int main() {
 
     inMang(arr, n);
 
-    cout << "Min     : " << timMin(arr, n)       << endl;
-    cout << "Max     : " << timMax(arr, n)       << endl;
-    cout << "Tong    : " << tinhTong(arr, n)     << endl;
+    cout << "Min     : " << timMin(arr, n) << endl;
+    cout << "Max     : " << timMax(arr, n) << endl;
+    cout << "Tong    : " << tinhTong(arr, n) << endl;
     cout << "Trung binh: " << tinhTrungBinh(arr, n) << endl;
 
     return 0;
