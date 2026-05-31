@@ -75,67 +75,59 @@ int main() {
 Bài 2: Mảng 2D ⭐⭐
 Nhân 2 ma trận n×n. Tính định thức ma trận 3×3. Hiển thị đẹp.
 #include <iostream>
-#include <iomanip>
+
 using namespace std;
-const int MAX = 10;
 
-void inMaTran(int a[][MAX], int n, const char* ten) {
-    cout << "\n  " << ten << ":\n  +";
-    for (int j = 0; j < n; j++) cout << "------+";
-    cout << "\n";
-    for (int i = 0; i < n; i++) {
-        cout << "  |";
-        for (int j = 0; j < n; j++) cout << setw(5) << a[i][j] << " |";
-        cout << "\n  +";
-        for (int j = 0; j < n; j++) cout << "------+";
-        cout << "\n";
-    }
+const int MAX = 100;
+
+void nhap_mt(int a[][MAX], int n) {
+	
+	for (int i = 0; i < n; i++) {
+		for (int j = 0;j < n;j++) {
+			cin >> a[i][j];
+		}
+	}
 }
 
-void nhapMaTran(int a[][MAX], int n, const char* ten) {
-    cout << "\n  Nhap " << ten << " (" << n << "x" << n << "):\n";
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++) {
-            cout << "    [" << i << "][" << j << "] = ";
-            cin >> a[i][j];
-        }
+void nhan_mt(int a[][MAX], int b[][MAX], int c[][MAX], int n) {
+	for (int i = 0; i < n; i++)
+		for (int j = 0; j < n; j++) {
+			c[i][j] = 0;
+			for (int k = 0; k < n; k++)
+				c[i][j] += a[i][k] * b[k][j];
+		}
 }
 
-void nhanMaTran(int a[][MAX], int b[][MAX], int c[][MAX], int n) {
-    for (int i = 0; i < n; i++)
-        for (int j = 0; j < n; j++) {
-            c[i][j] = 0;
-            for (int k = 0; k < n; k++)
-                c[i][j] += a[i][k] * b[k][j];
-        }
-}
-
-int dinhThuc3x3(int a[][MAX]) {
-    return a[0][0]*(a[1][1]*a[2][2] - a[1][2]*a[2][1])
-          -a[0][1]*(a[1][0]*a[2][2] - a[1][2]*a[2][0])
-          +a[0][2]*(a[1][0]*a[2][1] - a[1][1]*a[2][0]);
+void xuat_mt(int c[][MAX], int n) {
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			cout << c[i][j] << ' ';
+		}
+		cout << endl;
+	}
 }
 
 int main() {
-    int n, A[MAX][MAX], B[MAX][MAX], C[MAX][MAX];
+	int n;
+	int a[MAX][MAX], b[MAX][MAX], c[MAX][MAX];
 
-    // --- Nhân ma trận ---
-    cout << "Nhap n: "; cin >> n;
-    nhapMaTran(A, n, "A"); nhapMaTran(B, n, "B");
-    nhanMaTran(A, B, C, n);
-    inMaTran(A, n, "A"); inMaTran(B, n, "B"); inMaTran(C, n, "C = A x B");
+	
+	
+	cout << "nhap ma tran A kich thuoc n x n: ";
+	cin >> n;
+	nhap_mt(a, n);
+	
 
-    // --- Định thức 3x3 ---
-    int M[MAX][MAX];
-    nhapMaTran(M, 3, "M (3x3)");
-    inMaTran(M, 3, "M");
-    int det = dinhThuc3x3(M);
-    cout << "\n  det(M) = " << det
-         << (det == 0 ? "  => SUY BIEN\n" : "  => KHA NGHICH\n");
+	cout << "nhap ma tran B kich thuoc n x n: ";
+	cin >> n;
+	nhap_mt(b, n);
+	
 
-    return 0;
+	cout << "nhan hai ma tran " << endl;
+	nhan_mt(a, b, c, n);
+	xuat_mt(c, n);
+	return 0;
 }
-
 Bài 3: Con trỏ & cấp phát động ⭐⭐
 Cài đặt mảng động tự resize (như std::vector đơn giản). Hỗ trợ push_back, pop_back, at(i).
 #include <iostream>
