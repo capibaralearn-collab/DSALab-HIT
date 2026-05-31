@@ -89,6 +89,15 @@ void nhap_mt(int a[][MAX], int n) {
 	}
 }
 
+void xuat_mt(int a[][MAX], int n) {
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < n; j++) {
+			cout << a[i][j] << ' ';
+		}
+		cout << endl;
+	}
+}
+
 void nhan_mt(int a[][MAX], int b[][MAX], int c[][MAX], int n) {
 	for (int i = 0; i < n; i++)
 		for (int j = 0; j < n; j++) {
@@ -98,36 +107,31 @@ void nhan_mt(int a[][MAX], int b[][MAX], int c[][MAX], int n) {
 		}
 }
 
-void xuat_mt(int c[][MAX], int n) {
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < n; j++) {
-			cout << c[i][j] << ' ';
-		}
-		cout << endl;
-	}
-}
-
 int main() {
 	int n;
 	int a[MAX][MAX], b[MAX][MAX], c[MAX][MAX];
 
-	
-	
-	cout << "nhap ma tran A kich thuoc n x n: ";
+	cout << "nhap kich thuoc n cho 2 ma tran n x n: ";
 	cin >> n;
+
+	
+	cout << "nhap ma tran A : " << endl;
 	nhap_mt(a, n);
 	
 
-	cout << "nhap ma tran B kich thuoc n x n: ";
-	cin >> n;
+	cout << "nhap ma tran B : "<< endl;
 	nhap_mt(b, n);
 	
-
-	cout << "nhan hai ma tran " << endl;
 	nhan_mt(a, b, c, n);
+	cout << "ma tra A " << endl;
+	xuat_mt(a, n);
+	cout << "ma tra B " << endl;
+	xuat_mt(b, n);
+	cout << "nhan hai ma tran " << endl;
 	xuat_mt(c, n);
 	return 0;
 }
+
 Bài 3: Con trỏ & cấp phát động ⭐⭐
 Cài đặt mảng động tự resize (như std::vector đơn giản). Hỗ trợ push_back, pop_back, at(i).
 #include <iostream>
