@@ -2,76 +2,115 @@ Bài 1: Mảng cơ bản ⭐
 Nhập mảng n phần tử. Tính min, max, trung bình, tổng. Không dùng STL.
 #include <iostream>
 using namespace std;
+const int MAX = 100;
 
-void nhapMang(int arr[], int n) {
+void nhapMang(int a[], int n) {
     for (int i = 0; i < n; i++) {
-        cout << "arr[" << i << "] = ";
-        cin >> arr[i];
+        cout << "a[" << i << "] = ";
+        cin >> a[i];
     }
 }
 
-void inMang(int arr[], int n) {
-    cout << "Mang: ";
-    for (int i = 0; i < n; i++) {
-        cout << arr[i] << " ";
-    }
-    cout << endl;
-}
-/* chạy vòng lặp từ i = 0 đên khi nào vi phạm i < n thì dừng và in tra vị trí của từng vị trí của m*/
-int timMin(int arr[], int n) {
-    int min = arr[0];
+int timMin(int a[], int n) {
+    int min = a[0];
     for (int i = 1; i < n; i++) {
-        if (arr[i] < min)
-            min = arr[i];
+        if (a[i] < min)
+            min = a[i];
     }
     return min;
 }
-/*máy tính đặt biến min tại mảng ở vị trí 0, sau đó chạy vòng lặp duyệt từng mảng nếu thấy số nào nhỏ hơn min thì cập nhật min mới còn lớn hơn min thì bỏ qua*/
-int timMax(int arr[], int n) {
-    int max = arr[0];
+
+int timMax(int a[], int n) {
+    int max = a[0];
     for (int i = 1; i < n; i++) {
-        if (arr[i] > max)
-            max = arr[i];
+        if (a[i] > max)
+            max = a[i];
     }
     return max;
 }
-/*máy tính đặt biến max tại mảng ở vị trí 0, sau đó chạy vòng lặp duyệt từng mảng nếu thấy số nào lớn hơn max thì cập nhật max  mới còn nhỏ hơn max thì bỏ qua*/
 
-long long tinhTong(int arr[], int n) {
-    long long tong = 0;
+int tinhTong(int a[], int n) {
+    int s = 0;
     for (int i = 0; i < n; i++)
-        tong += arr[i];
-    return tong;
+        s += a[i];
+    return s;
 }
-/* khởi tạo biến tong và đặt giá trị ban đầu bằng 0,sau đó bắt đầu chạy vòng lặp từ vị trí i = 0 đến khi vi phạm i < n thì dừng và trả về kết quả */
-double tinhTrungBinh(int arr[], int n) {
-    return (double)tinhTong(arr, n) / n;
+
+float tinhTrungBinh(int a[], int n) {
+    return (float)tinhTong(a, n) / n;
 }
-/*gọi hàm tính tổng đã làm từ bước trước và trả về kết quả là số nguyên, và phải ép kiểu để về lại số thực, sau đó thực hiện phép chia để trả về kết quả*/
+
 int main() {
+    int a[MAX];
     int n;
-    cout << "Nhap so phan tu n: ";
-    cin >> n;
-
-    if (n <= 0) {
-        cout << "n phai lon hon 0!" << endl;
-        return 1;
-    }
-
-    int arr[1000]; // mảng tĩnh, tối đa 1000 phần tử
-    nhapMang(arr, n);
-
-    inMang(arr, n);
-
-    cout << "Min     : " << timMin(arr, n) << endl;
-    cout << "Max     : " << timMax(arr, n) << endl;
-    cout << "Tong    : " << tinhTong(arr, n) << endl;
-    cout << "Trung binh: " << tinhTrungBinh(arr, n) << endl;
+    /*ct vo vong lap do while de ktr neu n lon hon 0 thoat vong lap*/
+    do {
+        cout << "Nhap n: ";
+        cin >> n;
+    } while (n <= 0);
+    /* goi ham void nhapmang sau do chay vong lap de nguoi dung nhap va thoat vong lap sau khi dk vong for sai  */
+    nhapMang(a, n);
+    /* goi ham timMin khoi tao min la ptu dau tien cua mang sau do duyet tu ptu thu hai den het mang neu ptu nao nho hon min thi cap nhat bien min sau khi duyet xong tra ve min */
+    cout << "Min     : " << timMin(a, n) << endl;
+    /* goi ham timMax khoi tao max la ptu dau tien cua mang sau do duyet tu ptu thu hai den het mang neu ptu nao lon hon max thi cap nhat bien max sau khi duyet xong tra ve max */
+    cout << "Max     : " << timMax(a, n) << endl;
+    /*goi ham tinhtong khoi tao s = 0 sau do chay vong lap for tu phan tu dau tien den het mang , moi lan lap thi cong don phan tu hien tai vao s sau khi chay xong tra ve s */
+    cout << "Tong    : " << tinhTong(a, n) << endl;
+    /*goi ham tinhtrungbinh trong ham tinh trung binh goi tiep ham tinh tong sau khi duoc tong dem  chia cho n va phai ep kieu sang float */
+    cout << "Trung binh: " << tinhTrungBinh(a, n) << endl;
 
     return 0;
 }
-
-
+/*
+1. Bắt đầu chương trình - Hàm main()
+Vào vòng do-while:
+In ra: Nhap n:
+Người dùng nhập: 5 → n = 5
+Kiểm tra while (n <= 0) → sai → thoát vòng lặp
+Gọi hàm: nhapMang(a, 5)
+2. Vào hàm void nhapMang(int a[], int n)
+Vòng lặp nhập mảng:
+i = 0: In a[0] =  → Người dùng nhập 7 → a[0] = 7
+i = 1: In a[1] =  → Người dùng nhập 3 → a[1] = 3
+i = 2: In a[2] =  → Người dùng nhập 12 → a[2] = 12
+i = 3: In a[3] =  → Người dùng nhập 5 → a[3] = 5
+i = 4: In a[4] =  → Người dùng nhập 8 → a[4] = 8
+→ Mảng sau khi nhập: [7, 3, 12, 5, 8]
+3. Quay lại main() → Gọi timMin(a, 5)
+Vào hàm int timMin(int a[], int n):
+int min = a[0] = 7
+Vòng lặp:
+i=1: 3 < 7 → min = 3
+i=2: 12 < 3 → sai
+i=3: 5 < 3 → sai
+i=4: 8 < 3 → sai
+→ Trả về 3
+4. Gọi timMax(a, 5)
+Vào hàm int timMax(int a[], int n):
+int max = a[0] = 7
+Vòng lặp:
+i=1: 3 > 7 → sai
+i=2: 12 > 7 → max = 12
+i=3: 5 > 12 → sai
+i=4: 8 > 12 → sai
+→ Trả về 12
+5. Gọi tinhTong(a, 5)
+Vào hàm int tinhTong(int a[], int n):
+int s = 0
+Vòng lặp:
+i=0: s = 0 + 7 = 7
+i=1: s = 7 + 3 = 10
+i=2: s = 10 + 12 = 22
+i=3: s = 22 + 5 = 27
+i=4: s = 27 + 8 = 35
+→ Trả về 35
+6. Gọi tinhTrungBinh(a, 5)
+Vào hàm float tinhTrungBinh(int a[], int n):
+Gọi tinhTong(a, 5) → được 35
+Tính: (float)35 / 5 = 7.0
+→ Trả về 7
+7. Quay lại main() - In kết quả
+*/
 Bài 2: Mảng 2D ⭐⭐
 Nhân 2 ma trận n×n. Tính định thức ma trận 3×3. Hiển thị đẹp.
 #include <iostream>
