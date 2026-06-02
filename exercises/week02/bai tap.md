@@ -146,6 +146,13 @@ void nhan_mt(int a[][MAX], int b[][MAX], int c[][MAX], int n) {
 		}
 }
 
+int dinhthuc_3x3(int a[][MAX]) {
+	int duong_cheo_chinh = a[0][0] * a[1][1] * a[2][2] + a[0][1] * a[1][2] * a[2][0] + a[0][2] * a[1][0] * a[2][1];
+	int duong_cheo_phu = a[0][2] * a[1][1] * a[2][0] + a[0][0] * a[1][2] * a[2][1] + a[0][1] * a[1][0] * a[2][2];
+
+	return duong_cheo_chinh - duong_cheo_phu;
+}
+
 int main() {
 	int n;
 	int a[MAX][MAX], b[MAX][MAX], c[MAX][MAX];
@@ -153,23 +160,44 @@ int main() {
 	cout << "nhap kich thuoc n cho 2 ma tran n x n: ";
 	cin >> n;
 
-	
+	/*goi ham nhap_mt de nguoi dung nhap mt A */
 	cout << "nhap ma tran A : " << endl;
 	nhap_mt(a, n);
 	
-
+	/*goi ham nhap_mt de nguoi dung nhap mt B */
 	cout << "nhap ma tran B : "<< endl;
 	nhap_mt(b, n);
-	
+	/*goi ham nhan_mt khoi tao c[i][j] = 0, chay vong lap k de duyet dong thoi hang i cua ma tran A va cot j cua ma tran B moi lan lap lay phan tu a[i][k] nhan voi b[k][j] roi cong don vao c[i][j] vong lap k dung khi dk k < n sai*/
 	nhan_mt(a, b, c, n);
-	cout << "ma tra A " << endl;
+	cout << "ma tran A " << endl;
 	xuat_mt(a, n);
-	cout << "ma tra B " << endl;
+	cout << "ma tran B " << endl;
 	xuat_mt(b, n);
+
+	cout << endl;
+	/*goi ham xuat_mt de in ra ma tran c da thuc hien tich truoc do*/
 	cout << "nhan hai ma tran " << endl;
 	xuat_mt(c, n);
+
+
+	// ktr kich co ma tran co phai 3x3 ko neu dung thi goi ham tinh dinh thuc
+		/* Gọi hàm dinhthuc_3x3(a) trong main() để tính định thức ma trận cấp 3 bằng Quy tắc Sarrus (phương pháp đan chéo) */
+		/* Khởi tạo biến duong_cheo_chinh để lưu tổng tích của 3 đường chéo xuôi (chạy từ trái sang phải, hướng từ trên xuống dưới).
+	   - Tích 1: Đường chéo chính thực sự (a[0][0] * a[1][1] * a[2][2])
+	   - Tích 2 & 3: Các đường chéo song song quấn vòng qua ma trận (tưởng tượng như viết thêm cột 1 và cột 2 vào bên phải ma trận) */
+	   /* Khởi tạo biến duong_cheo_phu để lưu tổng tích của 3 đường chéo ngược (chạy từ trái sang phải, hướng từ dưới lên trên).
+	  - Tích 1: Đường chéo phụ thực sự (a[0][2] * a[1][1] * a[2][0])
+	  - Tích 2 & 3: Các đường chéo song song quấn ngược hướng còn lại */
+	  /* Định thức cuối cùng bằng Tổng các đường chéo xuôi (chính) trừ đi Tổng các đường chéo ngược (phụ).
+	 Sau khi thực hiện phép trừ, hàm trả về giá trị số nguyên này cho hàm main() */
+	cout << endl;
+	if (n == 3) {
+		cout <<"dinh thuc 3 x 3 = " << dinhthuc_3x3(a) << endl;
+	}
+
 	return 0;
 }
+
 
 Bài 3: Con trỏ & cấp phát động ⭐⭐
 Cài đặt mảng động tự resize (như std::vector đơn giản). Hỗ trợ push_back, pop_back, at(i).
