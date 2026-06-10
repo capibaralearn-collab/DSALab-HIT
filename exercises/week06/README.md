@@ -3,6 +3,12 @@
 ## 🎯 Mục tiêu tuần này
 Cài đặt Singly Linked List, thành thạo con trỏ, thêm/xóa/duyệt.
 
+
+---
+
+### Bài 1: Cài đặt Linked List ⭐⭐
+Cài đặt đầy đủ: thêm đầu, thêm cuối, xóa đầu, xóa cuối, xóa theo giá trị, tìm kiếm, in danh sách.
+
 #include <iostream>
 using namespace std;
 
@@ -161,10 +167,6 @@ int main() {
 
     return 0;
 }
----
-
-### Bài 1: Cài đặt Linked List ⭐⭐
-Cài đặt đầy đủ: thêm đầu, thêm cuối, xóa đầu, xóa cuối, xóa theo giá trị, tìm kiếm, in danh sách.
 
 ### Bài 2: Đảo ngược danh sách ⭐⭐
 Đảo ngược Linked List bằng 2 cách: iterative (3 con trỏ) và recursive. So sánh.
