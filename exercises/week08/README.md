@@ -187,6 +187,149 @@ int main() {
 ### Bài 3: Chuyển đổi biểu thức ⭐⭐⭐
 Chuyển biểu thức Infix → Postfix → Prefix. In từng bước.
 
+#include <iostream>
+#include <stack>
+#include <string>
+#include <cctype>
+#include <algorithm>
+
+// Hàm trả về độ ưu tiên của toán tử
+int precedence(char c) {
+    if (c == '^') return 3;
+    if (c == '*' || c == '/') return 2;
+    if (c == '+' || c == '-') return 1;
+    return -1;
+}
+
+// Hàm in trạng thái hiện tại của Stack dưới dạng chuỗi
+std::string getStackStr(std::stack<char> s) {
+    std::string str = "";
+    while (!s.empty()) {
+        str = s.top() + str;
+        s.pop();
+    }
+    return str.empty() ? "Rong" : str;
+}
+
+std::string infixToPostfix(std::string infix) {
+    std::stack<char> s;
+    std::string postfix = "";
+
+    std::cout << "\n--- QUA TRINH CHUYEN INFIX -> POSTFIX ---\n";
+    std::cout << "Ky tu\t| Stack\t\t| Bieu thuc hien tai\n";
+    std::cout << "-------------------------------------------\n";
+
+    for (char ch : infix) {
+        // Nếu là khoảng trắng thì bỏ qua
+        if (isspace(ch)) continue;
+
+        // 1. Nếu là toán hạng
+        if (isalnum(ch)) {
+            postfix += ch;
+        }
+        // 2. Nếu là '('
+        else if (ch == '(') {
+            s.push(ch);
+        }
+        // 3. Nếu là ')'
+        else if (ch == ')') {
+            while (!s.empty() && s.top() != '(') {
+                postfix += s.top();
+                s.pop();
+            }
+            if (!s.empty()) s.pop(); // Xóa '('
+        }
+        // 4. Nếu là toán tử
+        else {
+            while (!s.empty() && precedence(ch) <= precedence(s.top())) {
+                postfix += s.top();
+                s.pop();
+            }
+            s.push(ch);
+        }
+        // In từng bước
+        std::cout << ch << "\t| " << getStackStr(s) << "\t\t| " << postfix << "\n";
+    }
+
+    // Pop nốt các toán tử còn lại
+    while (!s.empty()) {
+        postfix += s.top();
+        s.pop();
+        std::cout << "End\t| " << getStackStr(s) << "\t\t| " << postfix << "\n";
+    }
+
+    return postfix;
+}
+
+
+
+std::string infixToPrefix(std::string infix) {
+    std::cout << "\n--- QUA TRINH CHUYEN INFIX -> PREFIX ---\n";
+    
+    // Bước 1 & 2: Đảo ngược và đổi dấu ngoặc
+    std::reverse(infix.begin(), infix.end());
+    for (int i = 0; i < infix.length(); i++) {
+        if (infix[i] == '(') infix[i] = ')';
+        else if (infix[i] == ')') infix[i] = '(';
+    }
+    std::cout << "Bieu thuc sau khi dao nguoc & doi ngoak: " << infix << "\n\n";
+
+    std::stack<char> s;
+    std::string prefix = "";
+
+    std::cout << "Ky tu\t| Stack\t\t| Bieu thuc hien tai\n";
+    std::cout << "-------------------------------------------\n";
+
+    for (char ch : infix) {
+        if (isspace(ch)) continue;
+
+        if (isalnum(ch)) {
+            prefix += ch;
+        } else if (ch == '(') {
+            s.push(ch);
+        } else if (ch == ')') {
+            while (!s.empty() && s.top() != '(') {
+                prefix += s.top();
+                s.pop();
+            }
+            if (!s.empty()) s.pop();
+        } else {
+            // Lưu ý: Dấu '<' thay vì '<=' để đảm bảo tính đúng đắn cho Prefix
+            while (!s.empty() && precedence(ch) < precedence(s.top())) {
+                prefix += s.top();
+                s.pop();
+            }
+            s.push(ch);
+        }
+        std::cout << ch << "\t| " << getStackStr(s) << "\t\t| " << prefix << "\n";
+    }
+
+    while (!s.empty()) {
+        prefix += s.top();
+        s.pop();
+        std::cout << "End\t| " << getStackStr(s) << "\t\t| " << prefix << "\n";
+    }
+
+    // Bước 4: Đảo ngược kết quả lần cuối
+    std::reverse(prefix.begin(), prefix.end());
+    return prefix;
+}
+
+
+
+
+int main() {
+    std::string infix = "A + B * (C - D) / E";
+    std::cout << "Bieu thuc Infix ban dau: " << infix << "\n";
+
+    std::string postfix = infixToPostfix(infix);
+    std::cout << "\n=> KET QUA POSTFIX: " << postfix << "\n";
+    
+    std::string prefix = infixToPrefix(infix);
+    std::cout << "\n=> KET QUA PREFIX: " << prefix << "\n";
+
+    return 0;
+}
 ### Bài 4: 🔥 Dự Án Mini — Máy Tính Biểu Thức ⭐⭐⭐
 > **Cảm hứng:** [Pilha_Expressão_A — DanielSantDev/Projects-with-Cpp](https://github.com/DanielSantDev/Projects-with-Cpp)
 
