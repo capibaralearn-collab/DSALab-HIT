@@ -7,6 +7,127 @@ Cài đặt Stack bằng mảng và Linked List. Ứng dụng Stack trong bài t
 
 ### Bài 1: Cài đặt Stack ⭐⭐
 Cài đặt Stack bằng mảng (array-based) và bằng Linked List. So sánh ưu nhược điểm.
+//mang
+#include <iostream>
+#define MAX 1000 // Kích thước tối đa của Stack
+
+class StackArray {
+private:
+    int top;
+    int a[MAX]; // Mảng lưu phần tử
+
+public:
+    StackArray() { top = -1; } // Khởi tạo Stack rỗng
+
+    bool push(int x) {
+        if (top >= (MAX - 1)) {
+            std::cout << "Stack Overflow (Tràn bộ nhớ)!\n";
+            return false;
+        }
+        a[++top] = x;
+        return true;
+    }
+
+    int pop() {
+        if (top < 0) {
+            std::cout << "Stack Underflow (Stack rỗng)!\n";
+            return 0;
+        }
+        return a[top--];
+    }
+
+    int peek() {
+        if (top < 0) {
+            std::cout << "Stack rỗng!\n";
+            return 0;
+        }
+        return a[top];
+    }
+
+    bool isEmpty() {
+        return (top < 0);
+    }
+};
+
+int main() {
+    StackArray s;
+    s.push(10);
+    s.push(20);
+    s.push(30);
+    std::cout << "Phan tu top: " << s.peek() << "\n";
+    std::cout << "Lay ra: " << s.pop() << "\n";
+    std::cout << "Phan tu top sau khi pop: " << s.peek() << "\n";
+    return 0;
+}
+
+//dslk
+#include <iostream>
+
+struct Node {
+    int data;
+    Node* next;
+};
+
+class StackLinkedList {
+private:
+    Node* top;
+
+public:
+    StackLinkedList() { top = nullptr; }
+
+    void push(int x) {
+        Node* temp = new Node();
+        if (!temp) {
+            std::cout << "Heap Overflow (Hết bộ nhớ hệ thống)!\n";
+            return;
+        }
+        temp->data = x;
+        temp->next = top; // Trỏ Node mới vào Node top cũ
+        top = temp;       // Cập nhật top mới
+    }
+
+    int pop() {
+        if (isEmpty()) {
+            std::cout << "Stack Underflow!\n";
+            return 0;
+        }
+        Node* temp = top;
+        int poppedData = temp->data;
+        top = top->next; // Dịch chuyển top xuống Node tiếp theo
+        delete temp;     // Giải phóng bộ nhớ
+        return poppedData;
+    }
+
+    int peek() {
+        if (!isEmpty()) {
+            return top->data;
+        }
+        std::cout << "Stack rỗng!\n";
+        return 0;
+    }
+
+    bool isEmpty() {
+        return top == nullptr;
+    }
+    
+    // Hàm hủy để tránh rò rỉ bộ nhớ khi hủy đối tượng
+    ~StackLinkedList() {
+        while (!isEmpty()) {
+            pop();
+        }
+    }
+};
+
+int main() {
+    StackLinkedList s;
+    s.push(10);
+    s.push(20);
+    s.push(30);
+    std::cout << "Phan tu top: " << s.peek() << "\n";
+    std::cout << "Lay ra: " << s.pop() << "\n";
+    std::cout << "Phan tu top sau khi pop: " << s.peek() << "\n";
+    return 0;
+}
 
 ### Bài 2: Kiểm tra ngoặc hợp lệ ⭐⭐
 Kiểm tra chuỗi có đóng mở ngoặc `()`, `[]`, `{}` hợp lệ không. Xử lý cả chuỗi code thực tế.
