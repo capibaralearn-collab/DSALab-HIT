@@ -132,6 +132,58 @@ int main() {
 ### Bài 2: Kiểm tra ngoặc hợp lệ ⭐⭐
 Kiểm tra chuỗi có đóng mở ngoặc `()`, `[]`, `{}` hợp lệ không. Xử lý cả chuỗi code thực tế.
 
+#include <iostream>
+#include <stack>
+#include <string>
+
+bool isValidParentheses(const std::string& code) {
+    std::stack<char> s;
+
+    for (char ch : code) {
+        // 1. Nếu là ngoặc mở, push vào stack
+        if (ch == '(' || ch == '[' || ch == '{') {
+            s.push(ch);
+        }
+        // 2. Nếu là ngoặc đóng, kiểm tra tính hợp lệ
+        else if (ch == ')' || ch == ']' || ch == '}') {
+            // Nếu gặp ngoặc đóng mà stack rỗng -> Không hợp lệ
+            if (s.empty()) return false;
+
+            char top = s.top();
+            // Kiểm tra xem ngoặc đóng có khớp với ngoặc mở ở đỉnh stack không
+            if ((ch == ')' && top == '(') ||
+                (ch == ']' && top == '[') ||
+                (ch == '}' && top == '{')) {
+                s.pop(); // Khớp thì xóa ngoặc mở khỏi stack
+            } else {
+                return false; // Không khớp cặp -> Lỗi
+            }
+        }
+        // Các ký tự khác (a-z, 0-9, +, -, ...) bị bỏ qua
+    }
+
+    // Nếu kết thúc chuỗi mà stack rỗng tức là tất cả đều được khớp
+    return s.empty();
+}
+
+int main() {
+    // Test case 1: Chuỗi code thực tế hợp lệ
+    std::string code1 = "if (arr[0] == {x, y}) { return (x + y); }";
+    std::cout << "Code 1: " << (isValidParentheses(code1) ? "Hop le" : "Khong hop le") << "\n";
+
+    // Test case 2: Thiếu dấu đóng ngoặc nhọn '}'
+    std::string code2 = "void func() { int a = (5 + 2); "; 
+    std::cout << "Code 2: " << (isValidParentheses(code2) ? "Hop le" : "Khong hop le") << "\n";
+
+    // Test case 3: Sai thứ tự đóng mở ngoặc ([)]
+    std::string code3 = "int main() { return arr[(x + y)]; }"; // Hợp lệ
+    std::string code4 = "int main() { return arr[(x + y} ];";  // Không hợp lệ (ngoặc đóng '}' sai vị trí)
+    std::cout << "Code 3: " << (isValidParentheses(code3) ? "Hop le" : "Khong hop le") << "\n";
+    std::cout << "Code 4: " << (isValidParentheses(code4) ? "Hop le" : "Khong hop le") << "\n";
+
+    return 0;
+}
+
 ### Bài 3: Chuyển đổi biểu thức ⭐⭐⭐
 Chuyển biểu thức Infix → Postfix → Prefix. In từng bước.
 
