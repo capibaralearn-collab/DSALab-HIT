@@ -48,7 +48,13 @@ public:
         return (top < 0);
     }
 };
+// tong quan
 
+//Biến top đóng vai trò là số hiện tại .Khi khởi tạo, stack rỗng thì top = -1.
+
+//push(x) : Tăng lên(++top) rồi xếp người x vào .Nếu chạm 999 (MAX - 1) thì báo lỗi tràn(Stack Overflow).
+
+//pop() : loai top ra ngoài, rồi hạ xuong một (top--).
 int main() {
     StackArray s;
     s.push(10);
@@ -109,7 +115,7 @@ public:
     bool isEmpty() {
         return top == nullptr;
     }
-    
+
     // Hàm hủy để tránh rò rỉ bộ nhớ khi hủy đối tượng
     ~StackLinkedList() {
         while (!isEmpty()) {
@@ -118,16 +124,61 @@ public:
     }
 };
 
-int main() {
-    StackLinkedList s;
-    s.push(10);
-    s.push(20);
-    s.push(30);
-    std::cout << "Phan tu top: " << s.peek() << "\n";
-    std::cout << "Lay ra: " << s.pop() << "\n";
-    std::cout << "Phan tu top sau khi pop: " << s.peek() << "\n";
-    return 0;
-}
+//tong quan
+//Nó giống như một chuỗi liên kết các toa tàu.Toa sau móc nối vào toa trước thông qua một sợi xích(Node* next).
+
+//Con trỏ top luôn quản lý địa chỉ moi nhat).Khi khởi tạo, không có chuoi nào thì top = nullptr.
+
+//push(x) : Tạo hẳn một chuoi  mới tinh từ bộ nhớ(new Node), nhét dữ liệu x vào, móc xích của toa mới này vào toa top cũ, rồi gắn bảng tên top cho toa mới này.
+
+//pop() : Nhấc toa đầu tiên(top) ra, chuyển quyền quản lý top cho toa liền sau nó(top->next), rồi đem phá hủy toa cũ đi(delete temp) để giải phóng bộ nhớ.////
+
+//int main() {
+  //  StackLinkedList s;
+    //s.push(10);
+    //s.push(20);
+    //s.push(30);
+    //std::cout << "Phan tu top: " << s.peek() << "\n";
+    //std::cout << "Lay ra: " << s.pop() << "\n";
+    //std::cout << "Phan tu top sau khi pop: " << s.peek() << "\n";
+    //return 0;
+//}
+
+
+//1.Cài đặt Stack bằng Mảng(Array - based)
+//Phương pháp này giống như một hộp xếp chồng có kích thước cố định được đúc sẵn.
+
+//Ưu điểm :
+//Tốc độ truy cập tối đa : Các phần tử nằm ở các ô nhớ liên tiếp nhau.Cơ chế bộ nhớ đệm
+//(Cache) của CPU cực kỳ thích điều này(Cache - friendly), giúp các thao tác push, pop
+//diễn ra với tốc độ phản hồi vật lý nhanh nhất.
+
+//Tiết kiệm bộ nhớ trên từng phần tử : Bạn chỉ tốn đúng dung lượng để lưu giá trị của dữ
+//liệu(ví dụ : 4 bytes cho biến int), không tốn thêm bất kỳ chi phí quản lý nào khác.
+
+//Độ phức tạp thời gian cố định : Cam kết chắc chắn thời gian xử lý là $O(1)$ cho mọi tác vụ mà không gặp rủi ro hệ thống bận cấp phát bộ nhớ.
+
+//Nhược điểm : Kích thước "tù túng" : Phải khai báo một hằng số MAX ngay từ đầu.Cấp dư thì lãng phí bộ nhớ tĩnh, cấp thiếu thì ứng dụng bị sập do lỗi tráo đổi bộ nhớ(Stack Overflow).
+
+//Kém linh hoạt : Không thể co giãn một cách tự nhiên trong quá trình chương trình đang chạy.
+
+
+//2.Cài đặt Stack bằng Danh sách liên kết(Linked List - based)
+
+//Phương pháp này giống như một chuỗi các toa tàu được móc nối với nhau linh hoạt bằng xích.
+
+//Ưu điểm : Kích thước "vô hạn" : Stack có thể co giãn hoàn toàn chủ động theo thời gian thực(Runtime).Bạn có thể push bao nhiêu tùy thích cho đến khi máy tính... hết sạch RAM.
+
+//Tối ưu bộ nhớ thực tế : Dùng đến đâu cấp phát đến đấy.Nếu Stack trống, nó hầu như không chiếm dụng bộ nhớ của hệ thống.
+
+//Không sợ Overflow : Loại bỏ hoàn toàn nỗi lo chết chương trình giữa chừng do tràn dung lượng Stack được định sẵn.
+
+//Nhược điểm : Tốn chi phí bộ nhớ phụ : Mỗi một Node ngoài việc lưu dữ liệu thì bắt buộc phải "cõng" thêm một con trỏ 
+//next(tốn thêm 4 bytes trên hệ thống 32 - bit hoặc 8 bytes trên hệ thống 64 - bit).
+
+//Tốc độ bị ảnh hưởng : Các phần tử nằm rải rác khắp nơi trong bộ nhớ RAM(Heap).Mỗi lần push hay pop, CPU phải tốn thời gian gọi lệnh cấp phát / giải phóng bộ nhớ(new / delete) 
+//và đi tìm địa chỉ, làm giảm hiệu suất Cache của CPU. 
+
 
 ### Bài 2: Kiểm tra ngoặc hợp lệ ⭐⭐
 Kiểm tra chuỗi có đóng mở ngoặc `()`, `[]`, `{}` hợp lệ không. Xử lý cả chuỗi code thực tế.
