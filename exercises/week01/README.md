@@ -4,7 +4,6 @@
 Hiểu Big-O, phân tích độ phức tạp, ôn tập C++ cơ bản.
 
 ---
-
 ### Bài 1: Phân tích Big-O ⭐ 2125110152 nguyễn trí công
 Xác định Big-O của 10 đoạn code C++ cho trước. Giải thích tại sao.
 int getElement(int arr[], int i) {
